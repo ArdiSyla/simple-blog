@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.js';
 import postRoutes from './routes/posts.js';
 import uploadRoutes from './routes/upload.js';
+import adminRoutes from './routes/admin.js';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(cors({
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)

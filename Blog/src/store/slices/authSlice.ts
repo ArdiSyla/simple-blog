@@ -5,6 +5,7 @@ interface User {
   id: string;
   username: string;
   email: string;
+  role: 'user' | 'admin'; // Add role to User type
 }
 
 interface AuthState {

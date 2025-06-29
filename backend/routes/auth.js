@@ -8,7 +8,7 @@ const router = express.Router();
 // Register a new user
 router.post('/register', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
     
     // Check if user already exists
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -16,13 +16,13 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
     
-    // Create new user
-    const newUser = new User({ username, email, password });
+    // Create new user (role defaults to 'user' if not provided)
+    const newUser = new User({ username, email, password, role: role || 'user' });
     await newUser.save();
     
     // Generate JWT token
     const token = jwt.sign(
-      { id: newUser._id, username: newUser.username },
+      { id: newUser._id, username: newUser.username, role: newUser.role },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
@@ -39,7 +39,8 @@ router.post('/register', async (req, res) => {
       user: {
         id: newUser._id,
         username: newUser.username,
-        email: newUser.email
+        email: newUser.email,
+        role: newUser.role
       }
     });
   } catch (error) {
@@ -66,7 +67,7 @@ router.post('/login', async (req, res) => {
     
     // Generate JWT token
     const token = jwt.sign(
-      { id: user._id, username: user.username },
+      { id: user._id, username: user.username, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
@@ -82,7 +83,8 @@ router.post('/login', async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        role: user.role
       }
     });
   } catch (error) {

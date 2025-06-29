@@ -10,6 +10,7 @@ import CreatePost from './pages/CreatePost';
 import PostDetail from './pages/PostDetail';
 import EditPost from './pages/EditPost';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -34,6 +35,11 @@ function App() {
           <Route path="/edit-post/:id" element={
             <ProtectedRoute>
               <EditPost />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute role="admin">
+              <AdminDashboard />
             </ProtectedRoute>
           } />
         </Routes>

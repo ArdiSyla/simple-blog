@@ -4,9 +4,10 @@ import { useAppSelector } from '../hooks/useAppSelector';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  role?: 'admin' | 'user'; // Optional role prop
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }) => {
   const { user, loading } = useAppSelector(state => state.auth);
 
   if (loading) {
@@ -19,6 +20,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (!user) {
     return <Navigate to="/login" />;
+  }
+
+  if (role && user.role !== role) {
+    // If a role is specified and user doesn't match, redirect to home or not authorized
+    return <Navigate to="/" />;
   }
 
   return <>{children}</>;
