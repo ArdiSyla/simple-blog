@@ -49,72 +49,144 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div></div>;
-  if (error) return <div className="text-red-600">{error}</div>;
+  if (loading) return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex justify-center items-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-indigo-500 border-t-transparent mx-auto mb-4"></div>
+        <p className="text-indigo-700 font-medium">Loading dashboard...</p>
+      </div>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex justify-center items-center">
+      <div className="bg-red-50 border border-red-200 rounded-xl p-6 shadow-lg">
+        <div className="text-red-700 font-semibold text-lg">{error}</div>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="space-y-10">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
-      <section>
-        <h2 className="text-xl font-semibold mb-2">All Users</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border">Username</th>
-                <th className="py-2 px-4 border">Email</th>
-                <th className="py-2 px-4 border">Role</th>
-                <th className="py-2 px-4 border">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map(u => (
-                <tr key={u._id}>
-                  <td className="py-2 px-4 border">{u.username}</td>
-                  <td className="py-2 px-4 border">{u.email}</td>
-                  <td className="py-2 px-4 border">{u.role}</td>
-                  <td className="py-2 px-4 border">
-                    {u._id !== user?.id && (
-                      <button onClick={() => handleDeleteUser(u._id)} className="text-red-600 hover:text-red-800 flex items-center">
-                        <Trash2 className="w-4 h-4 mr-1" /> Delete
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="space-y-10">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold mb-6 text-gray-800 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Admin Dashboard
+            </h1>
+          </div>
+          
+          <section className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+              <h2 className="text-xl font-semibold text-white">All Users</h2>
+            </div>
+            <div className="p-6">
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                        Username
+                      </th>
+                      <th className="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                        Email
+                      </th>
+                      <th className="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                        Role
+                      </th>
+                      <th className="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {users.map(u => (
+                      <tr key={u._id} className="hover:bg-gray-50 transition-colors duration-200">
+                        <td className="py-4 px-6 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {u.username}
+                        </td>
+                        <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
+                          {u.email}
+                        </td>
+                        <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            u.role === 'admin' 
+                              ? 'bg-purple-100 text-purple-800' 
+                              : 'bg-blue-100 text-blue-800'
+                          }`}>
+                            {u.role}
+                          </span>
+                        </td>
+                        <td className="py-4 px-6 whitespace-nowrap text-sm font-medium">
+                          {u._id !== user?.id && (
+                            <button 
+                              onClick={() => handleDeleteUser(u._id)} 
+                              className="text-red-600 hover:text-red-800 hover:bg-red-50 px-3 py-2 rounded-lg transition-all duration-200 flex items-center font-medium"
+                            >
+                              <Trash2 className="w-4 h-4 mr-1" /> Delete
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          
+          <section className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+            <div className="bg-gradient-to-r from-green-600 to-teal-600 px-6 py-4">
+              <h2 className="text-xl font-semibold text-white">All Posts</h2>
+            </div>
+            <div className="p-6">
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                        Title
+                      </th>
+                      <th className="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                        Author
+                      </th>
+                      <th className="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                        Created
+                      </th>
+                      <th className="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {posts.map(p => (
+                      <tr key={p._id} className="hover:bg-gray-50 transition-colors duration-200">
+                        <td className="py-4 px-6 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {p.title}
+                        </td>
+                        <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
+                          {p.author?.username || 'Unknown'}
+                        </td>
+                        <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
+                          {new Date(p.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="py-4 px-6 whitespace-nowrap text-sm font-medium">
+                          <button 
+                            onClick={() => handleDeletePost(p._id)} 
+                            className="text-red-600 hover:text-red-800 hover:bg-red-50 px-3 py-2 rounded-lg transition-all duration-200 flex items-center font-medium"
+                          >
+                            <Trash2 className="w-4 h-4 mr-1" /> Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
         </div>
-      </section>
-      <section>
-        <h2 className="text-xl font-semibold mb-2">All Posts</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border">Title</th>
-                <th className="py-2 px-4 border">Author</th>
-                <th className="py-2 px-4 border">Created</th>
-                <th className="py-2 px-4 border">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {posts.map(p => (
-                <tr key={p._id}>
-                  <td className="py-2 px-4 border">{p.title}</td>
-                  <td className="py-2 px-4 border">{p.author?.username || 'Unknown'}</td>
-                  <td className="py-2 px-4 border">{new Date(p.createdAt).toLocaleDateString()}</td>
-                  <td className="py-2 px-4 border">
-                    <button onClick={() => handleDeletePost(p._id)} className="text-red-600 hover:text-red-800 flex items-center">
-                      <Trash2 className="w-4 h-4 mr-1" /> Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };
